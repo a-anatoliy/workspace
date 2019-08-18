@@ -6,7 +6,7 @@ This README would normally document whatever steps are necessary to get your app
 
 * Quick summary
   This is new project created to start learning the PHP & JavaScript
-* Version
+* Version  
 	v.0.0.1
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
@@ -33,6 +33,5 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-	Anatolii <a3three@gmail.com>
+* Repo owner or admin Anatolii
 * Other community or team contact

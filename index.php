@@ -77,89 +77,11 @@
         </div>
         <div class="col-lg-6">
             <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Main site</h3>
-                </div>
+                <div class="panel-heading"><h3 class="panel-title">Main site</h3></div>
                 <div class="panel-body">
-
-                    <p><span class="label label-default"><?=$root?></span></p>
-                    <ul>
-                        <li>Lori.yunk@endurance.com</li>
-                        <li>thomasw@eligo.co.uk</li>
-                        <li>jobs@7binaryoptions.com</li>
-                        <li>mikem@digitalwork.com</li>
-                        <li>LAMPDev@fourthestate.com</li>
-                        <li>mike@ascentsourcing.com</li>
-                        <li>debs@perl.careers</li>
-                        <li>pete@perl.careers</li>
-                        <li>charlie@marshallrp.com</li>
-                        <li>dservideo@ctsalbany.com</li>
-                        <li>hola@airbnbcupon.com</li>
-                        <li>itlead@drjays.com</li>
-                        <li>carl.pickett@adrianflux.co.uk</li>
-                        <li>frank.pacheco@lexisnexisrisk.com</li>
-                        <li>resumes@PerlHunter.com</li>
-                        <li>sshaw@homeaway.com</li>
-                        <li>iwanttowork@adestra.com</li>
-                        <li>joseph@cdrecruiting.com</li>
-                        <li>jill@wellnessgeeky.com</li>
-                        <li>uriel@aytomic.com</li>
-                        <li>stephanie.thompson@shiftboard.com</li>
-                        <li>garett@gss.us</li>
-                        <li>stephane.tougard@ameex-mobile.com</li>
-                        <li>chris.travers@adjust.com</li>
-                        <li>careers@mediaalpha.com</li>
-                        <li>matt.rigdon@rht.com</li>
-                        <li>contact@wearebettors.com</li>
-                        <li>c.de.zeeuw@office.caiw.nl</li>
-                        <li>altchilerm@cargotel.com</li>
-                        <li>jobs@geizhals.at</li>
-                        <li>jobs@ams-ix.net</li>
-                        <li>Jamiea@adzuna.com</li>
-                        <li>jobs@bet.me</li>
-                        <li>robert@sawinery.net</li>
-                        <li>resumes@bestpractical.com</li>
-                        <li>HR@enigmamedia.se</li>
-                        <li>d.ahmed@computerfutures.com</li>
-                        <li>careers@cricviz.com</li>
-                        <li>Raj@grmi.Net</li>
-                        <li>Noor.genuineit@gmail.com</li>
-                        <li>amy@mediaalpha.com</li>
-                        <li>andreaj@phmgmt.com</li>
-                        <li>clarin@bbaw.de</li>
-                        <li>personalstelle@bbaw.de</li>
-                        <li>nrandall@TEKsystems.com</li>
-                        <li>dvolz@brooksource.com</li>
-                        <li>il@netapp-monitoring.info</li>
-                        <li>hr@transfer-to.com</li>
-                        <li>rachel.kane@vectorsolutions.com</li>
-                        <li>ceo@tokeet.com</li>
-                        <li>anastasia@getseennow.co.uk</li>
-                        <li>matt@osrecruit.com</li>
-                        <li>info@binaryoptionsaustralia.com</li>
-                        <li>praca@sidnet.pl</li>
-                        <li>jobs@nuvolagroup.com.au</li>
-                        <li>Nick.edelman@revolutiontechnology.co.uk</li>
-                        <li>lucile.leboucher@kuehne-nagel.com</li>
-                        <li>may.tay@capitasingapore.com</li>
-                        <li>itc1@capitasingapore.com</li>
-                        <li>kiran.bhumana@sap.com</li>
-                        <li>nimesh.rawal@xoriant.com</li>
-                        <li>jobonlycity88@gmail.com</li>
-                        <li>jobs@sipwise.com</li>
-                        <li>jobs@directfreight.com</li>
-                        <li>rakesh@mroads.com</li>
-                        <li>rdouville@cypresshcm.com</li>
-                        <li>vishal@mroads.com</li>
-                        <li>vishal@mroads.com</li>
-                        <li>itjob@dotmed.com</li>
-                        <li>cgarcia@skillsetgroup.com</li>
-                        <li>phanmichelle@prahs.com</li>
-                        <li>job-7359@webcdr.com</li>
-                        <li>nweill@altaits.com</li>
-                        <li>hrdepartment@brandify.com</li>
-                        <li>will.townsley@inphoria.com</li>
-                    </ul>
+                  <p><span class="label label-default"><?=$root?></span></p>
+                  <!-- all of used emails goes here -->
+                  <ul><li>first@email.com</li><li>second@email.com</li></ul>
                 </div>
             </div>
         </div>
@@ -179,7 +101,6 @@
                     $xml='https://jobs.perl.org/rss/standard.rss';
                     $xmlDoc = new DOMDocument();
                     $xmlDoc->load($xml);
-
                     $x=$xmlDoc->getElementsByTagName('item');
                     for ($i=0; $i<=10; $i++) {
                         $item_title=$x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
@@ -191,7 +112,6 @@
 //                        echo ("<br>");
 //                        echo ($item_desc . "</p>");
                     }
-
                     ?>
                 </p>
             </div>

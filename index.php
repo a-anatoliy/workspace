@@ -5,13 +5,40 @@
  * Date: 22.10.2017
  * Time: 21:35
  */
-    $root  = $_SERVER['DOCUMENT_ROOT']; $tmplName = $root . "/data/email.html";
-    $fp    = fopen( $tmplName, "r") or die("Unable to open file!");
-    $eText = fread($fp,filesize($tmplName));
-    $totalemails = 16;
-    $newItems = 24;
+  date_default_timezone_set('CET');
+  error_reporting(E_ALL);
+  //    ini_set('display_errors', 0);
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  set_include_path(get_include_path()
+  .PATH_SEPARATOR.'core'
+  .PATH_SEPARATOR.'objects'
+);
 
-    fclose($fp);
+spl_autoload_extensions("_class.php");
+spl_autoload_register();
+
+  define("ROOT_DIR"  , $_SERVER['DOCUMENT_ROOT'] );
+  define('_ATHREERUN', 1 );
+  define('CONFIG'    , ROOT_DIR . '/data/cfg/config.php');
+  define('DB_CONFIG' , ROOT_DIR . '/data/cfg/rnd_string.php');
+
+  $cfg = array_merge(
+    require_once CONFIG,    // get main configuration
+    require_once DB_CONFIG  // get the database configuration
+  );
+
+  $email = ROOT_DIR . $cfg['site']['email'];
+  $fp    = fopen( $email, "r") or die("Unable to open file!");
+  $eText = fread($fp,filesize($email));
+  fclose($fp);
+
+  // establish the db connection
+  $d = new Data($cfg);
+  $totalemails = $d->getValue(QueryMap::SELECT_TOTAL); $totalemails = $totalemails['total'];
+
+  $newItems = 0;
+
 ?>
 
 <!DOCTYPE html><html lang="en"><head>
@@ -45,9 +72,9 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#stat">Statistics
-                        <span class="badge badge-important">
-                            <?=$totalemails?>
-                        </span>
+                      <span class="badge badge-important">
+                        <?=$totalemails?>
+                      </span>
                     </a>
                 </li>
                 <li><a href="#news">New Items
@@ -79,7 +106,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading"><h3 class="panel-title">Main site</h3></div>
                 <div class="panel-body">
-                  <p><span class="label label-default"><?=$root?></span></p>
+                  <p><!-- span class="label label-default"><?=ROOT_DIR?></span></p -->
                   <!-- all of used emails goes here -->
                   <ul><li>first@email.com</li><li>second@email.com</li></ul>
                 </div>

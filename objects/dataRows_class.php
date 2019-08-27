@@ -4,11 +4,11 @@
  */
 
 class dataRows {
-  private $email, $contentID, $date, $dbh;
+  private $email, $contentID, $title, $date, $dbh;
   private $fields = array();
 
   public function __construct($email, $contentID, $date, $dbh) {
-    $this->fields = ['email','contentID','date'];
+    $this->fields = ['email','contentID','title','date'];
     $this->dbh = $dbh;
   }
 
@@ -35,9 +35,9 @@ class dataRows {
   public function getContentID() { return $this->contentID; }
   public function setContentID($contentID) { $this->contentID = $contentID; return $this; }
 
+  public function getTitle() { return $this->title; }
+  public function setTitle($title) { $this->title = $title; return $this; }
+
   public function getDate() { return $this->date; }
   public function setDate($date) { $this->date = $date; return $this; }
-
-
-
 }

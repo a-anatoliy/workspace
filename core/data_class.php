@@ -9,7 +9,7 @@
 class Data {
     // Database Connection Configuration Parameters
     // array('driver' => 'mysql','host' => '','dbname' => '','username' => '','password' => '')
-//    protected $_config;
+    // protected $_config;
 
   // Database Connection
   public $dbc;

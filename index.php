@@ -65,63 +65,26 @@ spl_autoload_register();
 
 <div class="container">
     <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Perl subscribers</a>
-        </div>
+        <div class="navbar-header"><a class="navbar-brand" href="#">Perl subscribers</a></div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#stat">Statistics
-                      <span class="badge badge-important">
-                        <?=$totalemails?>
-                      </span>
-                    </a>
-                </li>
-                <li><a href="#news">New Items
-                        <span class="badge badge-important">
-                            <?=$newItems?>
-                        </span>
-                    </a>
-                </li>
+                <li><a href="#stat">Statistics <span class="badge badge-important"><?=$totalemails?></span></a></li>
+                <li><a href="#news">New Items <span class="badge badge-important"><?=$newItems?></span></a></li>
                 <li><a href="https://jobs.perl.org" target="_blank">Site</a></li>
             </ul>
         </div>
     </nav>
 </div>
-      <br><br><br><br>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-primary drop-shadow">
-                <div class="panel-heading">
-                    <h3 class="panel-title" data-toggle="collapse" data-target="#tmpl">Template</h3>
-                    <small><i class="icon-chevron-down"></i></small>
-                </div>
-                <div class="panel-body collapse in" id="tmpl">
-                    <?=$eText?>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h3 class="panel-title">Main site</h3></div>
-                <div class="panel-body">
-                  <p><!-- span class="label label-default"><?=ROOT_DIR?></span></p -->
-                  <!-- all of used emails goes here -->
-                  <ul><li>first@email.com</li><li>second@email.com</li></ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<br><br><br><br>
 
 <div class="container">
-
     <!-- Send mail Section -->
     <section id="sendNew" class="container content-section">
         <div class="row">
             <div class="col-12">
-                <h4 class="text-center">let's send another several e-mails</h4>
+                <h4 class="text-left">New items:</h4>
                 <p>
 <!--                    <script language="JavaScript" src="http://jobs.perl.org/rss/standard.js"></script>-->
                     <?php
@@ -129,21 +92,52 @@ spl_autoload_register();
                     $xmlDoc = new DOMDocument();
                     $xmlDoc->load($xml);
                     $x=$xmlDoc->getElementsByTagName('item');
-                    for ($i=0; $i<=10; $i++) {
-                        $item_title=$x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
-                        $item_link=$x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-                        $item_date=$x->item($i)->getElementsByTagName('date')->item(0)->childNodes->item(0)->nodeValue;
-//                        $item_desc=$x->item($i)->getElementsByTagName('description')
-//                            ->item(0)->childNodes->item(0)->nodeValue;
-                        echo ("<p><a href='" . $item_link . "'>" . $item_title . "</a> d: ".$item_date."</p>");
-//                        echo ("<br>");
-//                        echo ($item_desc . "</p>");
+                    for ($i=0; $i < $cfg['site']['items']; $i++) {
+                        $title=$x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+                        $link=$x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
+                        $date=$x->item($i)->getElementsByTagName('date')->item(0)->childNodes->item(0)->nodeValue;
+                        $desc=$x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
+
+                      $jobItem = new DomDocument();
+                      $jobItem->loadHTMLFile($link);
+                      foreach ($jobItem->getElementsByTagName('td') as $element) {
+                        echo $element->nodeValue,"\n";
+                      }
+
+                        printf("<p><a href='%s'>%s</a> date: %s</p>",$link,$title,$date);
+                        printf("<div>%s</div>",$desc);
                     }
                     ?>
                 </p>
             </div>
         </div>
     </section>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="panel panel-primary drop-shadow">
+          <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#tmpl">Template</h3>
+            <small><i class="icon-chevron-down"></i></small>
+          </div>
+          <div class="panel-body collapse in" id="tmpl">
+            <?=$eText?>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading"><h3 class="panel-title">Main site</h3></div>
+          <div class="panel-body">
+            <p><!-- span class="label label-default"><?=ROOT_DIR?></span></p -->
+              <!-- all of used emails goes here -->
+            <ul><li>first@email.com</li><li>second@email.com</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <!-- Statistics Section -->
     <section id="statistics" class="container content-section">

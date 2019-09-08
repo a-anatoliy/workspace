@@ -89,7 +89,8 @@ class Data {
     try {
       self::$sth = self::getPDOConnection()->prepare($query);
       self::$sth->execute((array) $param);
-      return self::$sth->fetchAll(PDO::FETCH_ASSOC);
+      $res = self::$sth->fetchAll(PDO::FETCH_ASSOC);
+      return $res;
     } catch(PDOException $e) {
       echo __LINE__.' - '.$e->getMessage();
     }

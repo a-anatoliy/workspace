@@ -13,7 +13,7 @@
   set_include_path(get_include_path()
   .PATH_SEPARATOR.'core'
   .PATH_SEPARATOR.'objects'
-);
+  );
 
 spl_autoload_extensions("_class.php");
 spl_autoload_register();
@@ -28,6 +28,7 @@ spl_autoload_register();
     require_once DB_CONFIG  // get the database configuration
   );
 
+//  require_once ROOT_DIR . '/lib/Utils_class.php';
   $email = ROOT_DIR . $cfg['site']['email'];
   $fp    = fopen( $email, "r") or die("Unable to open file!");
   $eText = fread($fp,filesize($email));
@@ -87,27 +88,50 @@ spl_autoload_register();
                 <h4 class="text-left">New items:</h4>
                 <p>
 <!--                    <script language="JavaScript" src="http://jobs.perl.org/rss/standard.js"></script>-->
-                    <?php
-                    $xml='https://jobs.perl.org/rss/standard.rss';
-                    $xmlDoc = new DOMDocument();
-                    $xmlDoc->load($xml);
-                    $x=$xmlDoc->getElementsByTagName('item');
-                    for ($i=0; $i < $cfg['site']['items']; $i++) {
-                        $title=$x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
-                        $link=$x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-                        $date=$x->item($i)->getElementsByTagName('date')->item(0)->childNodes->item(0)->nodeValue;
-                        $desc=$x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
+                  <?php
+                  $Utils = new Utils();
+                  $xml='https://jobs.perl.org/rss/standard.rss';
+                  $xmlDoc = new DOMDocument();
+                  $xmlDoc->load($xml);
+                  $x=$xmlDoc->getElementsByTagName('item');
+                  $counter=1;$i=0;
 
-                      $jobItem = new DomDocument();
-                      $jobItem->loadHTMLFile($link);
-                      foreach ($jobItem->getElementsByTagName('td') as $element) {
-                        echo $element->nodeValue,"\n";
+                  do {
+                      $title=$x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+                      $link=$x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
+                      $date=$x->item($i)->getElementsByTagName('date')->item(0)->childNodes->item(0)->nodeValue;
+                      $desc=$x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
+                      $i++;
+//                      $jobItem = new DomDocument();
+//                      $jobItem->loadHTMLFile($link);
+//                      foreach ($jobItem->getElementsByTagName('td') as $element) {
+//                        echo $element->nodeValue,"\n";
+//                      }
+                      $content = $Utils->getHtml($link);
+                      $contact = $Utils->extractEmail($content);
+
+                      if($contact=== []) {
+                        printf("<div>E-mail address not detected. <a href='%s' target='_blank'>%s</a></div>\n",
+                          $link,$title);
+                        continue;
+                      } else {
+                        $string = $contact[0];
+                        $drTot = $d->getAll(QueryMap::SELECT_BY_EMAIL, $string);
+                        if($drTot === []) {
+                          printf("<div><b>%d.</b> [%s] - <a href='%s' target='_blank'>%s</a> e-mail: %s</div>\n",
+                            $counter,$date,$link,$title,$string);
+                          $counter++;
+                        } else {
+//                          printf("<pre>The [%s] already exists.</pre>", $string);
+                          continue;
+                        }
                       }
+//                        printf("<div>%s</div>",$desc);
+//                        printf("<div>%s</div>",$content);
+                  } while($counter <=$cfg['site']['items']);
 
-                        printf("<p><a href='%s'>%s</a> date: %s</p>",$link,$title,$date);
-                        printf("<div>%s</div>",$desc);
-                    }
-                    ?>
+                  ?>
+
                 </p>
             </div>
         </div>

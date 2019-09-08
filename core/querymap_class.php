@@ -11,6 +11,8 @@ class QueryMap {
     const DB_PREFIX = 'pj_';
 
     const SELECT_TOTAL = "SELECT count(id) as 'total' FROM ".QueryMap::DB_PREFIX."main";
+    const SELECT_BY_EMAIL = 'SELECT id FROM '.QueryMap::DB_PREFIX."main where email like ?";
+    const SELECT_ALL_BYID = 'SELECT * FROM '.QueryMap::DB_PREFIX."main where id = ?";
 }
 
 

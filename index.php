@@ -85,9 +85,12 @@ spl_autoload_register();
     <section id="sendNew" class="container content-section">
         <div class="row">
             <div class="col-12">
-                <h4 class="text-left">New items:</h4>
-                <p>
 <!--                    <script language="JavaScript" src="http://jobs.perl.org/rss/standard.js"></script>-->
+              <table class="table table-striped table-hover thead-dark">
+              <thead>
+                <tr><th>#</th><th>date</th><th>link</th><th>email</th></tr>
+              </thead>
+              <tbody>
                   <?php
                   $Utils = new Utils();
                   $xml='https://jobs.perl.org/rss/standard.rss';
@@ -118,8 +121,13 @@ spl_autoload_register();
                         $string = $contact[0];
                         $drTot = $d->getAll(QueryMap::SELECT_BY_EMAIL, $string);
                         if($drTot === []) {
-                          printf("<div><b>%d.</b> [%s] - <a href='%s' target='_blank'>%s</a> e-mail: %s</div>\n",
-                            $counter,$date,$link,$title,$string);
+                          printf("<tr>
+                            <td>%d.</td>
+                            <td class='text-small'>%s</td>
+                            <td><a href='%s' target='_blank'>%s</a></td>
+                            <td><span id='emailID_%d'>%s</span></td>
+                          </tr>\n",
+                            $counter,$date,$link,$title,$counter,$string);
                           $counter++;
                         } else {
 //                          printf("<pre>The [%s] already exists.</pre>", $string);
@@ -132,7 +140,8 @@ spl_autoload_register();
 
                   ?>
 
-                </p>
+                </tbody>
+                </table>
             </div>
         </div>
     </section>

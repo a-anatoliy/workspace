@@ -1,3 +1,4 @@
+use luckyDress_db;
 truncate table `pj_main`;
 INSERT INTO `pj_main` (`id`,`email`,`contentID`,`title`,`date`) VALUES
 (null,"Lori.yunk@endurance.com",0,'',now()),

@@ -25,6 +25,8 @@
 
 data/cfg/rnd_string.php
 data/emails.db
+init/db_data.sql
+
 
 # OS generated files #
 ######################

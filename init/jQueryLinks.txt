@@ -1,0 +1,14 @@
+https://stackoverflow.com/questions/39288366/how-to-get-a-value-of-data-attribute-with-jquery
+https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute
+
+https://www.tutorialrepublic.com/faq/how-to-get-the-data-id-attribute-of-an-element-using-jquery.php
+
+https://www.tutorialrepublic.com/jquery-tutorial/
+https://www.tutorialrepublic.com/faq/how-to-get-the-id-of-the-element-that-fired-an-event-in-jquery.php
+https://www.tutorialrepublic.com/jquery-tutorial/jquery-ajax-get-and-post-requests.php
+
+https://thisinterestsme.com/send-ajax-request-page-loaded/
+https://stackoverflow.com/questions/23473162/make-ajax-call-after-page-load
+https://api.jquery.com/ready/
+
+

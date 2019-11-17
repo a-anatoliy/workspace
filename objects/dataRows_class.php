@@ -3,13 +3,16 @@
  * Class dataRows
  */
 
+require_once './querymap_class.php';
+
 class dataRows {
   private $email, $contentID, $title, $date, $dbh;
   private $fields = array();
 
-  public function __construct($email, $contentID, $date, $dbh) {
+  public function __construct($parameters = array(), $dbh) {
     $this->fields = ['email','contentID','title','date'];
     $this->dbh = $dbh;
+    $this->setFields($parameters);
   }
 
   private function setFields($rowData = array()) {
@@ -29,11 +32,24 @@ class dataRows {
     return $out;
   }
 
+  public function insertDataRow() {
+    $res = $this->dbh->runQuery(QueryMap::INSERT_ROW, $this->getFields());
+    return $res;
+  }
+
+  public function selectDataRow() {
+    return 1;
+  }
+
   public function getEmail() { return $this->email; }
   public function setEmail($email) { $this->email = $email; return $this; }
 
   public function getContentID() { return $this->contentID; }
-  public function setContentID($contentID) { $this->contentID = $contentID; return $this; }
+  public function setContentID($contentID) {
+    $url = explode('/',$contentID);
+    $this->contentID = end($url);
+    return $this;
+  }
 
   public function getTitle() { return $this->title; }
   public function setTitle($title) { $this->title = $title; return $this; }

@@ -31,7 +31,7 @@
   );
 
 //  require_once ROOT_DIR . '/lib/Utils_class.php';
-  $email = ROOT_DIR . $cfg['site']['email'];
+  $email = ROOT_DIR . $cfg['site']['srcTxt'];
   $tableRowTemplate = ROOT_DIR . $cfg['site']['tdTmpl'];
   $fp    = fopen( $email, "r") or die("Unable to open file!");
   $eText = fread($fp,filesize($email));
@@ -80,8 +80,8 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#stat">Statistics <span class="badge badge-important"><?=$totalemails?></span></a></li>
-                <li><a href="#news">New Items <span class="badge badge-important"><?=$newItems?></span></a></li>
+                <li><a href="#stat">Total emails <span class="badge badge-important"><?=$totalemails?></span></a></li>
+                <li><a href="#news">Requested <span class="badge badge-important"><?=$cfg['site']['items']?></span></a></li>
                 <li><a href="https://jobs.perl.org" target="_blank">Site</a></li>
             </ul>
         </div>
@@ -102,40 +102,47 @@
                 </thead>
                 <tbody>
                 <?php
+                ini_set('max_execution_time', 300);
                 $Utils = new Utils();
                 $xml='https://jobs.perl.org/rss/standard.rss';
                 $xmlDoc = new DOMDocument();
                 $xmlDoc->load($xml);
-                $x=$xmlDoc->getElementsByTagName('item');
-                $counter=1;$i=0;
 
-                do {
-                  $title=$x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
-                  $link=$x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-                  $date=$x->item($i)->getElementsByTagName('date')->item(0)->childNodes->item(0)->nodeValue;
-                  $desc=$x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
-                  $i++;
-                  $content = $Utils->getHtml($link);
-                  $contact = $Utils->extractEmail($content);
+                  if (is_object($xmlDoc->getElementsByTagName('item'))) {
+                    $x=$xmlDoc->getElementsByTagName('item');
+                    $counter=1;$i=0;
 
-                  if($contact=== []) {
-                    printf("<div>E-mail address not detected. <a href='%s' target='_blank'>%s</a></div>\n",
-                      $link,$title);
-                    continue;
-                  } else {
-                    $string = $contact[0];
-                    $drTot = $d->getAll(QueryMap::SELECT_BY_EMAIL, $string);
-                    if($drTot === []) {
-                      include $tableRowTemplate;
-                      $counter++;
-                    } else {
-                      //printf("<pre>The [%s] already exists.</pre>", $string);
-                      continue;
-                    }
-                  }
+                    do {
+                      if($x->item($i) === NULL) { break ;}
+                      $title = $x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+                      $link  = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
+                      $date  = $x->item($i)->getElementsByTagName('date')->item(0)->childNodes->item(0)->nodeValue;
+                      $desc  = $x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
+
+                      $i++;
+                      $content = $Utils->getHtml($link);
+                      $contact = $Utils->extractEmail($content);
+
+                      if($contact=== []) {
+                        printf("<div>E-mail address not detected. <a href='%s' target='_blank'>%s</a></div>\n",
+                          $link,$title);
+                        continue;
+                      } else {
+                        $string = $contact[0];
+                        $drTot = $d->getAll(QueryMap::SELECT_BY_EMAIL, $string);
+                        if($drTot === []) {
+                          include $tableRowTemplate;
+                          $counter++;
+                        } else {
+                          //printf("<pre>The [%s] already exists.</pre>", $string);
+                          continue;
+                        }
+                      }
+
 //                        printf("<div>%s</div>",$desc);
-//                        printf("<div>%s</div>",$content);
-                } while($counter <=$cfg['site']['items']);
+
+                    } while($counter <=$cfg['site']['items']);
+                  } // EO of is_object
                 ?>
 
                 </tbody>
@@ -154,7 +161,7 @@
             <small><i class="icon-chevron-down"></i></small>
           </div>
           <div class="panel-body collapse in" id="tmpl">
-            <?=$eText?>
+            <pre><?=$eText?></pre>
           </div>
         </div>
       </div>
@@ -162,24 +169,12 @@
         <div class="panel panel-primary">
           <div class="panel-heading"><h3 class="panel-title">Main site</h3></div>
           <div class="panel-body">
-            <p><!-- span class="label label-default"><?=ROOT_DIR?></span></p -->
-              <!-- all of used emails goes here -->
-            <ul><li>first@email.com</li><li>second@email.com</li></ul>
+            <div id="readyTemplate"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-    <!-- Statistics Section -->
-    <section id="statistics" class="container content-section">
-        <div class="row">
-            <div class="col-12">
-                <h4 class="text-center">here is my Statistics in short</h4>
-                <p>right here, right now</p>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <hr>

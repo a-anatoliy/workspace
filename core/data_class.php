@@ -127,6 +127,18 @@ class Data {
     * @param string sql insert update or delete statement
     * @return int count of records affected by running the sql statement.
     */
+  public function runQuery( $sql,$params = array() ) {
+    $count = '';
+    try {
+      $stmt= $this->dbc->prepare($sql);
+      $count = $stmt->execute($params);
+    } catch(PDOException $e) {
+      echo __LINE__.$e->getMessage();
+    }
+    return $count;
+  }
+
+}
 //    public function runQuery( $sql ) {
 //        $count = '';
 //        try {
@@ -136,6 +148,3 @@ class Data {
 //        }
 //        return $count;
 //    }
-
-
-}

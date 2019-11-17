@@ -40,27 +40,78 @@ $(document).ready(function() {
             }
         });
 
-        $.log(dataArray);
+        // $.log(dataArray);
         // $.log(ItemName +' = '+ ItemValue);
         // $.log(Id);
         // e.preventDefault();
-        // $.ajax({
-        //     type: "POST",
-        //     url: 'login.php',
-        //     data: $(this).serialize(),
-        //     success: function(response) {
-        //         var jsonData = JSON.parse(response);
-        //
-        //         // user is logged in successfully in the back-end
-        //         // let's redirect
-        //         if (jsonData.success == "1") {
-        //             location.href = 'my_profile.php';
-        //         } else {
-        //             alert('Invalid Credentials!');
-        //         }
-        //     }
-        // });
+        let scriptData = JSON.stringify(dataArray);
+        // let scriptData = $(dataArray).serialize();
+        // $.log(scriptData);
+
+        $.ajax({
+            type: "POST",
+            url: '/core/2215.php',
+            // contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            // data: scriptData,
+            data: { 'wannaAdd': scriptData },
+            success: function (result) {
+                alert('saved')
+                // alert(result);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(textStatus + ':' + errorThrown);
+            }
+        });
     });
 
+    $('.post_result').click(function(e) {
+        let dataArray={};
+        const Id = $(this).last().attr("data-id");
+        const TrId = 'tr#'+Id;
+
+        // iterate over each of td's in the current tr
+        // collect the values and put it into result json data
+        $(TrId+" > td").each(function() {
+            let ItemName = $(this).attr('id');
+            if (ItemName == null) { return } else {
+                if ( ItemName.localeCompare('link') == 0 ) {
+                    dataArray['title'] = $(this).text();
+                    let href = $(this).html();
+                    dataArray['link'] = $(href).attr('href');
+                    return;
+                } else {
+                    let ItemValue = $(this).text();
+                    dataArray[ItemName] = ItemValue;
+                }
+            }
+        });
+
+        // $.log(dataArray);
+        // $.log(ItemName +' = '+ ItemValue);
+        // $.log(Id);
+        // e.preventDefault();
+        let scriptData = JSON.stringify(dataArray);
+        // let scriptData = $(dataArray).serialize();
+        // $.log(scriptData);
+
+        $.ajax({
+            type: "POST",
+            url: '/core/2215.php',
+            // contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            // data: scriptData,
+            data: { 'wannaSend': scriptData },
+            success: function (result) {
+                // alert('saved')
+                $('#readyTemplate').html(result)
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(textStatus + ':' + errorThrown);
+            }
+        });
+    });
 
 });
+
+
